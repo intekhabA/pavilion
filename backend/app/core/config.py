@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     )
 
     # General
-    APP_NAME: str = "Pavilion Realty API"
+    APP_NAME: str = "Pavilion 360 API"
     APP_ENV: str = "development"  # development, staging, production
     DEBUG: bool = True
     API_V1_PREFIX: str = "/api/v1"
@@ -91,7 +91,7 @@ class Settings(BaseSettings):
     SMTP_USER: str = ""
     SMTP_PASSWORD: str = ""
     SMTP_FROM_EMAIL: str = "no-reply@pavilionrealty.com"
-    SMTP_FROM_NAME: str = "Pavilion Realty"
+    SMTP_FROM_NAME: str = "Pavilion 360"
     ADMIN_NOTIFICATION_EMAIL: str = "admin@pavilionrealty.com"
 
     # Initial Admin Seed Credentials

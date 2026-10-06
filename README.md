@@ -1,4 +1,4 @@
-# PAVILION REALTY
+# PAVILION 360
 
 ### Complete Production-Ready Full-Stack Real Estate Platform & Secure Admin CMS
 
@@ -10,7 +10,7 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38B2AC?logo=tailwind-css)](https://tailwindcss.com/)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker)](https://www.docker.com/)
 
-Pavilion Realty is a full-stack, enterprise-grade real estate marketing portal and administrative Content Management System (CMS). Built with design and UX inspiration from premier property consultancy portals (such as *investorsclinic.in*), Pavilion Realty features an original luxury architectural aesthetic, institutional due diligence standards, and a complete administrative control panel.
+Pavilion 360 is a full-stack, enterprise-grade real estate marketing portal and administrative Content Management System (CMS). Built with design and UX inspiration from premier property consultancy portals (such as *investorsclinic.in*), Pavilion 360 features an original luxury architectural aesthetic, institutional due diligence standards, and a complete administrative control panel.
 
 ---
 
@@ -225,4 +225,4 @@ pavilion/
 ---
 
 ## 📄 License
-Proprietary & Confidential. Designed for Pavilion Realty Advisory.
+Proprietary & Confidential. Designed for Pavilion 360 Advisory.

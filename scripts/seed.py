@@ -622,13 +622,13 @@ Each mansion features private elevator, temperature-controlled swimming pool, pr
 
         # 12. WEBSITE SETTINGS
         settings_defaults = [
-            ("site_name", "Pavilion Realty", "general", "Official company portal name"),
+            ("site_name", "Pavilion 360", "general", "Official company portal name"),
             ("site_tagline", "Curated Luxury Real Estate & Investment Portfolios", "general", "Public site tagline"),
             ("contact_phone", "+91 800-PAVILION / +91 98765 43210", "contact", "Primary concierge phone number"),
             ("contact_email", "concierge@pavilionrealty.com", "contact", "Official enquiry email"),
             ("office_address", "Pavilion Tower, Level 18, Golf Course Road, DLF Phase 5, Gurugram, India", "contact", "Corporate headquarters"),
-            ("rera_disclaimer", "Pavilion Realty is a registered Real Estate Regulatory Authority (RERA) compliant advisory firm. All project details, pricing, floor plans, and amenities are subject to developer specifications.", "legal", "Mandatory RERA compliance disclaimer"),
-            ("meta_title", "Pavilion Realty | India's Premier Luxury Real Estate Advisory", "seo", "Global SEO title"),
+            ("rera_disclaimer", "Pavilion 360 is a registered Real Estate Regulatory Authority (RERA) compliant advisory firm. All project details, pricing, floor plans, and amenities are subject to developer specifications.", "legal", "Mandatory RERA compliance disclaimer"),
+            ("meta_title", "Pavilion 360 | India's Premier Luxury Real Estate Advisory", "seo", "Global SEO title"),
             ("meta_description", "Discover India's and Dubai's most prestigious luxury apartments, villas, and penthouses. Transparent consultation, verified RERA documentation, and exclusive pricing.", "seo", "Global SEO description"),
         ]
 

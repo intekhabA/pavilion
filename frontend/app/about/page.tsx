@@ -7,14 +7,14 @@ export default function AboutPage() {
         {/* Hero */}
         <div className="text-center max-w-3xl mx-auto mb-16">
           <span className="text-xs font-semibold text-amber-600 uppercase tracking-widest">
-            About Pavilion Realty
+            About Pavilion 360
           </span>
           <h1 className="text-4xl sm:text-5xl font-extrabold font-serif text-slate-900 tracking-tight mt-2">
             Pioneering Luxury Real Estate Advisory
           </h1>
           <p className="text-sm sm:text-base text-slate-600 mt-4 leading-relaxed font-light">
             Founded on the pillars of institutional integrity, absolute transparency, and private wealth advisory,
-            Pavilion Realty connects discerning home buyers and global investors with iconic developments.
+            Pavilion 360 connects discerning home buyers and global investors with iconic developments.
           </p>
         </div>
 

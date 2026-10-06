@@ -361,8 +361,28 @@ export const apiService = {
       return res.data;
     },
     getExportUrl: (params?: Record<string, any>) => {
-      const query = new URLSearchParams(params).toString();
-      return `${API_URL}/admin/enquiries/export/csv?${query}`;
+      const token = typeof window !== "undefined" ? localStorage.getItem("pavilion_access_token") : "";
+      const queryParams = new URLSearchParams(params);
+      if (token) {
+        queryParams.set("token", token);
+      }
+      const query = queryParams.toString();
+      return `${API_URL}/admin/enquiries/export/csv${query ? `?${query}` : ""}`;
+    },
+    downloadExportCsv: async (params?: Record<string, any>, filename = "pavilion_leads.csv") => {
+      const res = await api.get("/admin/enquiries/export/csv", {
+        params,
+        responseType: "blob",
+      });
+      const blob = new Blob([res.data], { type: "text/csv;charset=utf-8;" });
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", filename);
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.URL.revokeObjectURL(url);
     },
   },
 

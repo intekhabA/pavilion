@@ -100,14 +100,13 @@ export default function AdminLeadsPage() {
           </p>
         </div>
 
-        <a
-          href={apiService.adminEnquiries.getExportUrl({ status: statusFilter || undefined })}
-          target="_blank"
-          className="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-4 py-2.5 rounded-xl border border-slate-700 flex items-center gap-1.5 transition-colors w-fit"
+        <button
+          onClick={() => apiService.adminEnquiries.downloadExportCsv({ status: statusFilter || undefined }, `leads_${statusFilter || "all"}.csv`)}
+          className="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-4 py-2.5 rounded-xl border border-slate-700 flex items-center gap-1.5 transition-colors w-fit cursor-pointer"
         >
           <Download className="w-4 h-4 text-amber-400" />
           <span>Export Filtered CSV</span>
-        </a>
+        </button>
       </div>
 
       {/* Filter Tabs by Status */}

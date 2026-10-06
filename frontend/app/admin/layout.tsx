@@ -121,8 +121,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <div className="p-6 border-b border-slate-800 flex items-center justify-between">
             <Link href="/admin/dashboard" className="flex items-center gap-3">
               <img
-                src="/logo.png"
-                alt="Pavilion Realty"
+                src="/logo2.png"
+                alt="Pavilion 360"
                 className="h-9 w-auto object-contain"
               />
               <div>
@@ -213,7 +213,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <Menu className="w-5 h-5" />
             </button>
             <span className="text-xs text-slate-400 font-mono hidden sm:inline">
-              Pavilion Realty Enterprise CMS v1.0
+              Pavilion 360 Enterprise CMS v1.0
             </span>
           </div>
 

@@ -2,7 +2,7 @@
 
 ## 1. System Overview
 
-**Pavilion Realty** is an enterprise-grade real-estate web application and secure administrative CMS built with a decoupled modern architecture:
+**Pavilion 360** is an enterprise-grade real-estate web application and secure administrative CMS built with a decoupled modern architecture:
 
 ```
 +-------------------------------------------------------------------------+

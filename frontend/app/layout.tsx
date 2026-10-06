@@ -4,7 +4,7 @@ import Footer from "@/components/Footer";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Pavilion Realty | Luxury Real Estate & Investment Portfolios",
+  title: "Pavilion 360 | Luxury Real Estate & Investment Portfolios",
   description:
     "Curated portfolio of prime apartments, sky penthouses, and gated private estates in India and Dubai. RERA verified with end-to-end investment advisory.",
   keywords: [
@@ -17,11 +17,11 @@ export const metadata: Metadata = {
     "golf course road",
     "rera verified",
   ],
-  authors: [{ name: "Pavilion Realty Advisory" }],
+  authors: [{ name: "Pavilion 360 Advisory" }],
   openGraph: {
-    title: "Pavilion Realty | Luxury Real Estate & Investment Advisory",
+    title: "Pavilion 360 | Luxury Real Estate & Investment Advisory",
     description: "Curated luxury residences from India and Dubai's premier developers.",
-    siteName: "Pavilion Realty",
+    siteName: "Pavilion 360",
     locale: "en_US",
     type: "website",
   },

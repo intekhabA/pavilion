@@ -50,7 +50,7 @@ class EmailService:
         <p><strong>Budget:</strong> {enquiry_data.get('budget_range', 'N/A')}</p>
         <p><strong>Message:</strong> {enquiry_data.get('message', 'N/A')}</p>
         <hr/>
-        <p><small>Pavilion Realty CRM System</small></p>
+        <p><small>Pavilion 360 CRM System</small></p>
         """
         EmailService.send_email(settings.ADMIN_NOTIFICATION_EMAIL, subject, html)
 

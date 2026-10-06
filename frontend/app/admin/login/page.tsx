@@ -46,8 +46,8 @@ export default function AdminLoginPage() {
         <div className="text-center mb-8">
           <Link href="/" className="inline-flex flex-col items-center gap-2 group">
             <img
-              src="/logo.png"
-              alt="Pavilion Realty"
+              src="/logo2.png"
+              alt="Pavilion 360"
               className="h-16 w-auto object-contain mx-auto group-hover:scale-105 transition-transform"
             />
             <div className="text-center">

@@ -20,7 +20,7 @@ export default function EnquiryModal({ isOpen, onClose, projectId, projectName, 
         {/* Header */}
         <div className="bg-slate-950 text-white p-5 flex items-center justify-between border-b border-slate-800">
           <div className="flex items-center gap-2.5">
-            <img src="/logo.png" alt="Pavilion" className="w-8 h-8 object-contain" />
+            <img src="/logo2.png" alt="Pavilion 360" className="w-8 h-8 object-contain" />
             <div>
               <h3 className="font-serif font-bold text-base text-white">
                 {title || (projectName ? `Enquiry for ${projectName}` : "Private Advisory Consultation")}

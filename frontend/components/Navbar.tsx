@@ -44,13 +44,13 @@ export default function Navbar() {
           {/* Brand Logo */}
           <Link href="/" className="flex items-center gap-3 group">
             <img
-              src="/logo.png"
-              alt="Pavilion Realty"
+              src="/logo2.png"
+              alt="Pavilion 360"
               className="h-11 w-auto object-contain group-hover:scale-105 transition-transform"
             />
             <div>
               <span className="text-xl font-bold tracking-wider text-white font-serif flex items-center gap-1.5">
-                PAVILION <span className="text-amber-400 text-sm tracking-widest font-sans font-light">REALTY</span>
+                PAVILION <span className="text-amber-400 text-xl tracking-widest font-sans font-light">360</span>
               </span>
               <p className="text-[10px] text-slate-400 tracking-widest uppercase -mt-0.5 flex items-center gap-1">
                 <ShieldCheck className="w-3 h-3 text-amber-400 inline" /> RERA Verified Advisory

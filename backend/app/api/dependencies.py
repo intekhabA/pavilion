@@ -1,5 +1,5 @@
 from typing import Optional, Callable
-from fastapi import Depends, Header, Request
+from fastapi import Depends, Header, Request, Query
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 from app.core.database import get_db
@@ -14,12 +14,13 @@ security = HTTPBearer(auto_error=False)
 
 def get_current_user(
     credentials: Optional[HTTPAuthorizationCredentials] = Depends(security),
+    token_query: Optional[str] = Query(None, alias="token"),
     db: Session = Depends(get_db),
 ) -> User:
-    if not credentials:
+    token = credentials.credentials if credentials else token_query
+    if not token:
         raise UnauthorizedException("Authentication token required.", error_code="TOKEN_MISSING")
 
-    token = credentials.credentials
     payload = decode_token(token)
     if not payload or payload.get("type") != "access":
         raise UnauthorizedException("Invalid or expired token.", error_code="TOKEN_INVALID")

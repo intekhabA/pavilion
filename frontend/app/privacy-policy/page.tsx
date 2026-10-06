@@ -8,7 +8,7 @@ export default function PrivacyPolicyPage() {
         <section className="space-y-3">
           <h2 className="text-lg font-bold text-slate-800">1. Information We Collect</h2>
           <p className="text-xs leading-relaxed">
-            When you inquire about a real estate property, request a brochure, or schedule a site visit, Pavilion Realty collects
+            When you inquire about a real estate property, request a brochure, or schedule a site visit, Pavilion 360 collects
             information such as your name, email address, phone number, and investment preferences.
           </p>
         </section>

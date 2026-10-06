@@ -74,14 +74,13 @@ export default function AdminDashboardPage() {
             <PlusCircle className="w-4 h-4" />
             <span>New Project</span>
           </Link>
-          <a
-            href={apiService.adminEnquiries.getExportUrl()}
-            target="_blank"
-            className="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-4 py-2.5 rounded-xl border border-slate-700 flex items-center gap-1.5 transition-colors"
+          <button
+            onClick={() => apiService.adminEnquiries.downloadExportCsv()}
+            className="bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-semibold px-4 py-2.5 rounded-xl border border-slate-700 flex items-center gap-1.5 transition-colors cursor-pointer"
           >
             <Download className="w-4 h-4 text-amber-400" />
             <span>Export Leads</span>
-          </a>
+          </button>
         </div>
       </div>
 

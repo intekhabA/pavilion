@@ -8,7 +8,7 @@ export default function TermsPage() {
         <section className="space-y-3">
           <h2 className="text-lg font-bold text-slate-800">1. Nature of Advisory Services</h2>
           <p className="text-xs leading-relaxed">
-            Pavilion Realty provides promotional, marketing, and channel partner advisory services for government-registered real estate developments.
+            Pavilion 360 provides promotional, marketing, and channel partner advisory services for government-registered real estate developments.
             We are not the developers or builders of the advertised properties.
           </p>
         </section>
