@@ -1,0 +1,47 @@
+# Dependencies
+node_modules/
+*/node_modules/
+venv/
+*/venv/
+.venv/
+*/.venv/
+
+# Next.js Build Outputs
+.next/
+*/.next/
+out/
+build/
+dist/
+
+# Python Cache & Artifacts
+__pycache__/
+*/__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+*/.pytest_cache/
+
+# Local Databases
+*.db
+*.db-shm
+*.db-wal
+*.sqlite
+*.sqlite3
+
+# Environment & Sensitive Files
+.env
+.env*.local
+*.env
+!*.env.example
+!.env.example
+
+# Media Uploads (User Content)
+media/uploads/*
+!media/uploads/.gitkeep
+
+# Operating System & IDE
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+.idea/
