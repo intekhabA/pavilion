@@ -15,9 +15,11 @@ export default function Footer() {
           {/* Column 1: Brand & Bio */}
           <div className="lg:col-span-2">
             <Link href="/" className="flex items-center gap-3 mb-4">
-              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-md">
-                <Building2 className="w-5 h-5 text-slate-950" />
-              </div>
+              <img
+                src="/logo.png"
+                alt="Pavilion Realty"
+                className="h-11 w-auto object-contain"
+              />
               <div>
                 <span className="text-xl font-bold tracking-wider text-white font-serif flex items-center gap-1.5">
                   PAVILION <span className="text-amber-400 text-sm tracking-widest font-sans font-light">REALTY</span>

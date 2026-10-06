@@ -43,14 +43,16 @@ export default function Navbar() {
         <div className="flex items-center justify-between">
           {/* Brand Logo */}
           <Link href="/" className="flex items-center gap-3 group">
-            <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-amber-400 via-amber-500 to-amber-700 flex items-center justify-center shadow-md shadow-amber-500/20 group-hover:scale-105 transition-transform">
-              <Building2 className="w-5 h-5 text-slate-950" />
-            </div>
+            <img
+              src="/logo.png"
+              alt="Pavilion Realty"
+              className="h-11 w-auto object-contain group-hover:scale-105 transition-transform"
+            />
             <div>
               <span className="text-xl font-bold tracking-wider text-white font-serif flex items-center gap-1.5">
                 PAVILION <span className="text-amber-400 text-sm tracking-widest font-sans font-light">REALTY</span>
               </span>
-              <p className="text-[10px] text-slate-400 tracking-widest uppercase -mt-1 flex items-center gap-1">
+              <p className="text-[10px] text-slate-400 tracking-widest uppercase -mt-0.5 flex items-center gap-1">
                 <ShieldCheck className="w-3 h-3 text-amber-400 inline" /> RERA Verified Advisory
               </p>
             </div>

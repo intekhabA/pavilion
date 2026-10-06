@@ -44,11 +44,13 @@ export default function AdminLoginPage() {
       <div className="relative z-10 w-full max-w-md">
         {/* Logo Card */}
         <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-3">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center shadow-lg shadow-amber-500/20">
-              <Building2 className="w-6 h-6 text-slate-950" />
-            </div>
-            <div className="text-left">
+          <Link href="/" className="inline-flex flex-col items-center gap-2 group">
+            <img
+              src="/logo.png"
+              alt="Pavilion Realty"
+              className="h-16 w-auto object-contain mx-auto group-hover:scale-105 transition-transform"
+            />
+            <div className="text-center">
               <span className="text-2xl font-bold tracking-wider text-white font-serif block">
                 PAVILION
               </span>
