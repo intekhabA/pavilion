@@ -447,7 +447,7 @@ export default function ProjectDetailPage() {
                 About the Developer: {project.developer_name}
               </h2>
               <p className="text-xs text-slate-600 leading-relaxed font-light">
-                {project.developer_name} is recognized as one of the country's preeminent real estate groups with a legacy of delivering landmark residential townships and high-end commercial addresses.
+                {project.developer_name} is recognized as one of the country&apos;s preeminent real estate groups with a legacy of delivering landmark residential townships and high-end commercial addresses.
                 All developments by {project.developer_name} carry verified government RERA registrations.
               </p>
             </div>

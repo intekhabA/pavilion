@@ -31,7 +31,7 @@ export default function AboutPage() {
             <Landmark className="w-8 h-8 text-amber-500 mb-4" />
             <h3 className="text-lg font-bold font-serif text-slate-900 mb-2">Direct Developer Alliances</h3>
             <p className="text-xs text-slate-500 leading-relaxed">
-              We work directly with India's and Dubai's premier corporate developers (DLF, Godrej, Oberoi, Sobha, Prestige), providing our clients first-access pricing.
+              We work directly with India&apos;s and Dubai&apos;s premier corporate developers (DLF, Godrej, Oberoi, Sobha, Prestige), providing our clients first-access pricing.
             </p>
           </div>
           <div className="bg-white p-8 rounded-2xl border border-slate-200/90 shadow-sm">

@@ -49,7 +49,7 @@ export default function HeroSection() {
       <div className="relative z-10 max-w-5xl mx-auto text-center mt-8">
         <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-slate-900/90 border border-amber-500/30 text-amber-300 text-xs font-semibold tracking-wider uppercase mb-6 backdrop-blur-md shadow-lg shadow-amber-500/10">
           <ShieldCheck className="w-4 h-4 text-amber-400" />
-          <span>India & Dubai's Verified Luxury Property Portal</span>
+          <span>India & Dubai&apos;s Verified Luxury Property Portal</span>
         </div>
 
         <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white font-serif tracking-tight leading-tight mb-6">

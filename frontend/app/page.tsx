@@ -106,7 +106,7 @@ export default function HomePage() {
               Explore Properties by Prime Location
             </h2>
             <p className="text-sm text-slate-400 mt-3 font-light">
-              High-yielding real-estate hotspots across India's metropolitan cities and the United Arab Emirates.
+              High-yielding real-estate hotspots across India&apos;s metropolitan cities and the United Arab Emirates.
             </p>
           </div>
 
