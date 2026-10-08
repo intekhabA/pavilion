@@ -20,12 +20,17 @@ import ProjectCard from "@/components/ProjectCard";
 import EnquiryModal from "@/components/EnquiryModal";
 import { apiService } from "@/services/api";
 import { ProjectCard as ProjectCardType, City } from "@/types";
+import { useSiteSettings } from "@/context/SettingsContext";
 
 export default function HomePage() {
+  const { settings } = useSiteSettings();
   const [featuredProjects, setFeaturedProjects] = useState<ProjectCardType[]>([]);
   const [cities, setCities] = useState<City[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
+
+  const primaryPhone = settings.contact_phone?.split("/")[0]?.trim() || "800-PAVILION";
+  const phoneTel = "tel:" + (primaryPhone.replace(/[^0-9+]/g, "") || "+918007284546");
 
   useEffect(() => {
     async function loadData() {
@@ -248,10 +253,10 @@ export default function HomePage() {
                 Schedule Private Site Visit
               </button>
               <a
-                href="tel:+918007284546"
+                href={phoneTel}
                 className="bg-slate-800/80 hover:bg-slate-800 text-slate-200 font-semibold px-6 py-3.5 rounded-xl border border-slate-700 transition-colors text-sm"
               >
-                Call: 800-PAVILION
+                Call: {primaryPhone}
               </a>
             </div>
           </div>

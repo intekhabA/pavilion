@@ -4,11 +4,16 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Building2, Phone, Menu, X, Compass, ShieldCheck } from "lucide-react";
+import { useSiteSettings } from "@/context/SettingsContext";
 
 export default function Navbar() {
   const pathname = usePathname();
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { settings } = useSiteSettings();
+
+  const primaryPhone = settings.contact_phone?.split("/")[0]?.trim() || "+91 800-PAVILION";
+  const phoneTel = "tel:" + (primaryPhone.replace(/[^0-9+]/g, "") || "+918007284546");
 
   // If in admin panel, Navbar is handled by admin layout
   const isAdmin = pathname?.startsWith("/admin");
@@ -81,11 +86,11 @@ export default function Navbar() {
           {/* Right Action CTA */}
           <div className="hidden lg:flex items-center gap-5">
             <a
-              href="tel:+918007284546"
+              href={phoneTel}
               className="flex items-center gap-2 text-xs font-semibold text-slate-300 hover:text-white transition-colors bg-slate-900/80 px-3.5 py-2 rounded-full border border-slate-800"
             >
               <Phone className="w-3.5 h-3.5 text-amber-400" />
-              <span>800-PAVILION</span>
+              <span>{primaryPhone}</span>
             </a>
             <Link
               href="/contact"
@@ -133,11 +138,11 @@ export default function Navbar() {
             ))}
             <div className="pt-4 border-t border-slate-800 flex flex-col gap-3">
               <a
-                href="tel:+918007284546"
+                href={phoneTel}
                 className="flex items-center justify-center gap-2 text-sm text-slate-300 py-2.5 rounded-lg bg-slate-900 border border-slate-800"
               >
                 <Phone className="w-4 h-4 text-amber-400" />
-                <span>Call 800-PAVILION</span>
+                <span>Call {primaryPhone}</span>
               </a>
               <Link
                 href="/contact"

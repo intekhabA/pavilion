@@ -31,6 +31,9 @@ export default function AdminSettingsPage() {
     try {
       await apiService.adminSettings.updateSetting(key, value);
       setSavedMsg(true);
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(new Event("pavilion_settings_updated"));
+      }
       setTimeout(() => setSavedMsg(false), 3000);
     } catch (e) {
       alert("Failed to update setting.");

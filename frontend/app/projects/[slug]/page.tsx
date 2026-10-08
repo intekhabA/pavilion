@@ -30,14 +30,19 @@ import ProjectCard from "@/components/ProjectCard";
 import { apiService } from "@/services/api";
 import { ProjectDetail, ProjectCard as ProjectCardType } from "@/types";
 import { formatPrice, formatDate } from "@/utils/format";
+import { useSiteSettings } from "@/context/SettingsContext";
 
 export default function ProjectDetailPage() {
   const { slug } = useParams() as { slug: string };
   const router = useRouter();
+  const { settings } = useSiteSettings();
 
   const [project, setProject] = useState<ProjectDetail | null>(null);
   const [similarProjects, setSimilarProjects] = useState<ProjectCardType[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const primaryPhone = settings.contact_phone?.split("/")[0]?.trim() || "800-PAVILION";
+  const phoneTel = "tel:" + (primaryPhone.replace(/[^0-9+]/g, "") || "+918007284546");
   const [activeImage, setActiveImage] = useState<string>("");
   const [activeBhkTab, setActiveBhkTab] = useState<number>(0);
   const [brochureModalOpen, setBrochureModalOpen] = useState(false);
@@ -475,8 +480,8 @@ export default function ProjectDetailPage() {
 
               <div className="mt-6 pt-5 border-t border-slate-100 flex items-center justify-between text-xs text-slate-600">
                 <span>Direct Hotline:</span>
-                <a href="tel:+918007284546" className="font-bold text-slate-900 hover:text-amber-600">
-                  800-PAVILION
+                <a href={phoneTel} className="font-bold text-slate-900 hover:text-amber-600">
+                  {primaryPhone}
                 </a>
               </div>
             </div>

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { SettingsProvider } from "@/context/SettingsContext";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -35,9 +36,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="bg-white text-slate-900 antialiased selection:bg-amber-400 selection:text-slate-950 min-h-screen flex flex-col justify-between">
-        <Navbar />
-        <main className="flex-grow">{children}</main>
-        <Footer />
+        <SettingsProvider>
+          <Navbar />
+          <main className="flex-grow">{children}</main>
+          <Footer />
+        </SettingsProvider>
       </body>
     </html>
   );

@@ -1,7 +1,12 @@
+"use client";
+
 import { MapPin, Phone, Mail, Clock, ShieldCheck } from "lucide-react";
 import EnquiryForm from "@/components/EnquiryForm";
+import { useSiteSettings } from "@/context/SettingsContext";
 
 export default function ContactPage() {
+  const { settings } = useSiteSettings();
+
   return (
     <div className="bg-slate-50 min-h-screen pt-28 pb-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -26,7 +31,7 @@ export default function ContactPage() {
               </div>
               <h3 className="text-base font-bold text-slate-900 font-serif mb-1">Corporate Headquarters</h3>
               <p className="text-xs text-slate-600 leading-relaxed font-light">
-                Level 18, Pavilion Tower, Golf Course Road, DLF Phase 5, Gurugram, Haryana - 122002, India
+                {settings.office_address || "Level 18, Pavilion Tower, Golf Course Road, DLF Phase 5, Gurugram, Haryana - 122002, India"}
               </p>
             </div>
 
@@ -36,8 +41,12 @@ export default function ContactPage() {
               </div>
               <h3 className="text-base font-bold text-slate-900 font-serif mb-1">Direct Hotline</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                Toll Free: <strong>800-PAVILION</strong> <br />
-                Direct Desk: +91 98765 43210
+                <a
+                  href={`tel:${settings.contact_phone?.replace(/[^0-9+]/g, "") || "+918007284546"}`}
+                  className="hover:text-amber-600 transition-colors font-medium"
+                >
+                  {settings.contact_phone || "+91 800-PAVILION / +91 98765 43210"}
+                </a>
               </p>
             </div>
 
@@ -47,8 +56,12 @@ export default function ContactPage() {
               </div>
               <h3 className="text-base font-bold text-slate-900 font-serif mb-1">Email Advisory</h3>
               <p className="text-xs text-slate-600 leading-relaxed">
-                concierge@pavilionrealty.com <br />
-                investor.relations@pavilionrealty.com
+                <a
+                  href={`mailto:${settings.contact_email || "concierge@pavilionrealty.com"}`}
+                  className="hover:text-amber-600 transition-colors font-medium"
+                >
+                  {settings.contact_email || "concierge@pavilionrealty.com"}
+                </a>
               </p>
             </div>
           </div>
