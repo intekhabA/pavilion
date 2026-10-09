@@ -178,11 +178,22 @@ export default function ProjectFormTabs({ initialData, isEdit = false }: Props) 
       ...formData,
       status: overrideStatus || formData.status,
       amenity_ids: selectedAmenities,
-      possession_date: formData.possession_date ? formData.possession_date : null,
-      launch_date: formData.launch_date ? formData.launch_date : null,
+      possession_date: formData.possession_date?.trim() ? formData.possession_date.trim() : null,
+      launch_date: formData.launch_date?.trim() ? formData.launch_date.trim() : null,
       slug: formData.slug?.trim() || null,
       locality_id: formData.locality_id ? Number(formData.locality_id) : null,
       property_type_id: formData.property_type_id ? Number(formData.property_type_id) : null,
+      country_id: Number(formData.country_id) || 1,
+      state_id: Number(formData.state_id) || 1,
+      city_id: Number(formData.city_id) || 1,
+      min_price: formData.min_price ? Number(formData.min_price) : null,
+      max_price: formData.max_price ? Number(formData.max_price) : null,
+      area_from: formData.area_from ? Number(formData.area_from) : null,
+      area_to: formData.area_to ? Number(formData.area_to) : null,
+      total_area_acres: formData.total_area_acres ? Number(formData.total_area_acres) : null,
+      total_floors: formData.total_floors ? Number(formData.total_floors) : null,
+      total_units: formData.total_units ? Number(formData.total_units) : null,
+      total_towers: formData.total_towers ? Number(formData.total_towers) : null,
     };
 
     try {
@@ -197,14 +208,14 @@ export default function ProjectFormTabs({ initialData, isEdit = false }: Props) 
           configurations: configurations.map((c) => ({
             name: c.name,
             bhk_type: c.bhk_type,
-            super_area: c.super_area,
-            carpet_area: c.carpet_area,
+            super_area: c.super_area ? Number(c.super_area) : null,
+            carpet_area: c.carpet_area ? Number(c.carpet_area) : null,
             area_unit: c.area_unit,
-            price: c.price,
+            price: c.price ? Number(c.price) : null,
             price_label: c.price_label,
-            bedrooms: c.bedrooms,
-            bathrooms: c.bathrooms,
-            balconies: c.balconies,
+            bedrooms: c.bedrooms ? Number(c.bedrooms) : 1,
+            bathrooms: c.bathrooms ? Number(c.bathrooms) : 1,
+            balconies: c.balconies ? Number(c.balconies) : 1,
             availability_status: c.availability_status,
           })),
           videos: youtubeUrl
@@ -224,12 +235,20 @@ export default function ProjectFormTabs({ initialData, isEdit = false }: Props) 
         }
       }
     } catch (err: any) {
+      console.error("Save project error:", err.response?.data || err);
       const resp = err.response?.data;
       if (resp?.data?.errors && Array.isArray(resp.data.errors) && resp.data.errors.length > 0) {
         const errorList = resp.data.errors
           .map((e: any) => `${e.field ? e.field.replace(/^body\s*->\s*/, "") + ": " : ""}${e.message}`)
           .join(", ");
         setErrorMsg(errorList);
+      } else if (Array.isArray(resp?.detail)) {
+        const errorList = resp.detail
+          .map((e: any) => `${e.loc ? e.loc.slice(-1)[0] + ": " : ""}${e.msg}`)
+          .join(", ");
+        setErrorMsg(errorList);
+      } else if (typeof resp?.detail === "string") {
+        setErrorMsg(resp.detail);
       } else {
         setErrorMsg(resp?.message || "Failed to save project.");
       }

@@ -21,6 +21,21 @@ class ProjectConfigurationBase(BaseModel):
     availability_status: str = "Available"
     description: Optional[str] = None
 
+    @field_validator(
+        "super_area",
+        "carpet_area",
+        "price",
+        "floor_plan_image_url",
+        "description",
+        "price_label",
+        mode="before",
+    )
+    @classmethod
+    def config_empty_str_to_none(cls, v):
+        if v == "" or (isinstance(v, str) and not v.strip()):
+            return None
+        return v
+
 
 class ProjectConfigurationCreate(ProjectConfigurationBase):
     pass
@@ -179,6 +194,17 @@ class ProjectBase(BaseModel):
         if v == "" or (isinstance(v, str) and not v.strip()):
             return None
         return v
+
+    @field_validator("country_id", "state_id", "city_id", mode="before")
+    @classmethod
+    def sanitize_location_ids(cls, v):
+        if v == "" or v is None or (isinstance(v, str) and not v.strip()):
+            return 1
+        try:
+            val = int(v)
+            return val if val > 0 else 1
+        except (ValueError, TypeError):
+            return 1
 
 
 class ProjectCreate(ProjectBase):
