@@ -75,3 +75,41 @@ def test_create_project_and_rbac(client, admin_token, viewer_token):
         headers={"Authorization": f"Bearer {admin_token}"},
     )
     assert del_res.status_code == 200
+
+
+def test_quick_save_project_with_empty_optional_fields(client, admin_token):
+    payload = {
+        "name": "Quick Save Empty Dates Project",
+        "slug": "",
+        "developer_name": "Test Builder Ltd",
+        "project_type": "Residential",
+        "country_id": 1,
+        "state_id": 1,
+        "city_id": 1,
+        "status": "draft",
+        "possession_date": "",
+        "launch_date": "",
+        "latitude": "",
+        "longitude": "",
+        "total_area_acres": "",
+        "min_price": "",
+        "max_price": "",
+    }
+    create_res = client.post(
+        "/api/v1/admin/projects",
+        json=payload,
+        headers={"Authorization": f"Bearer {admin_token}"},
+    )
+    assert create_res.status_code == 200, create_res.text
+    data = create_res.json()["data"]
+    assert data["name"] == "Quick Save Empty Dates Project"
+    assert data["slug"] == "quick-save-empty-dates-project"
+    assert data["possession_date"] is None
+    assert data["launch_date"] is None
+
+    # Clean up
+    client.delete(
+        f"/api/v1/admin/projects/{data['id']}",
+        headers={"Authorization": f"Bearer {admin_token}"},
+    )
+

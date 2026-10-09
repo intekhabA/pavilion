@@ -161,6 +161,15 @@ export default function ProjectFormTabs({ initialData, isEdit = false }: Props) 
   }, []);
 
   const handleSaveProject = async (overrideStatus?: string) => {
+    if (!formData.name || formData.name.trim().length < 2) {
+      setErrorMsg("Project Title is required (minimum 2 characters).");
+      return;
+    }
+    if (!formData.developer_name || formData.developer_name.trim().length < 2) {
+      setErrorMsg("Developer / Builder Name is required (minimum 2 characters).");
+      return;
+    }
+
     setSaving(true);
     setErrorMsg(null);
     setSuccessMsg(null);
@@ -169,6 +178,11 @@ export default function ProjectFormTabs({ initialData, isEdit = false }: Props) 
       ...formData,
       status: overrideStatus || formData.status,
       amenity_ids: selectedAmenities,
+      possession_date: formData.possession_date ? formData.possession_date : null,
+      launch_date: formData.launch_date ? formData.launch_date : null,
+      slug: formData.slug?.trim() || null,
+      locality_id: formData.locality_id ? Number(formData.locality_id) : null,
+      property_type_id: formData.property_type_id ? Number(formData.property_type_id) : null,
     };
 
     try {
@@ -210,7 +224,15 @@ export default function ProjectFormTabs({ initialData, isEdit = false }: Props) 
         }
       }
     } catch (err: any) {
-      setErrorMsg(err.response?.data?.message || "Failed to save project.");
+      const resp = err.response?.data;
+      if (resp?.data?.errors && Array.isArray(resp.data.errors) && resp.data.errors.length > 0) {
+        const errorList = resp.data.errors
+          .map((e: any) => `${e.field ? e.field.replace(/^body\s*->\s*/, "") + ": " : ""}${e.message}`)
+          .join(", ");
+        setErrorMsg(errorList);
+      } else {
+        setErrorMsg(resp?.message || "Failed to save project.");
+      }
     } finally {
       setSaving(false);
     }

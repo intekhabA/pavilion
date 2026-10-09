@@ -1,7 +1,7 @@
 from datetime import date, datetime
 from decimal import Decimal
 from typing import Optional, List
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, Field, ConfigDict, field_validator
 from app.schemas.location import CountryResponse, StateResponse, CityResponse, LocalityResponse
 from app.schemas.amenity import AmenityResponse, PropertyTypeResponse
 
@@ -156,6 +156,30 @@ class ProjectBase(BaseModel):
     og_image: Optional[str] = None
     is_indexable: bool = True
 
+    @field_validator(
+        "possession_date",
+        "launch_date",
+        "latitude",
+        "longitude",
+        "total_area_acres",
+        "min_price",
+        "max_price",
+        "area_from",
+        "area_to",
+        "total_floors",
+        "total_units",
+        "total_towers",
+        "locality_id",
+        "property_type_id",
+        "slug",
+        mode="before",
+    )
+    @classmethod
+    def empty_str_to_none(cls, v):
+        if v == "" or (isinstance(v, str) and not v.strip()):
+            return None
+        return v
+
 
 class ProjectCreate(ProjectBase):
     amenity_ids: Optional[List[int]] = []
@@ -208,6 +232,30 @@ class ProjectUpdate(BaseModel):
     og_image: Optional[str] = None
     is_indexable: Optional[bool] = None
     amenity_ids: Optional[List[int]] = None
+
+    @field_validator(
+        "possession_date",
+        "launch_date",
+        "latitude",
+        "longitude",
+        "total_area_acres",
+        "min_price",
+        "max_price",
+        "area_from",
+        "area_to",
+        "total_floors",
+        "total_units",
+        "total_towers",
+        "locality_id",
+        "property_type_id",
+        "slug",
+        mode="before",
+    )
+    @classmethod
+    def empty_str_to_none(cls, v):
+        if v == "" or (isinstance(v, str) and not v.strip()):
+            return None
+        return v
 
 
 # Optimized card representation for listings and search
