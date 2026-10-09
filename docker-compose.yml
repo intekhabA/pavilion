@@ -64,6 +64,11 @@ services:
       REDIS_HOST: redis
       REDIS_PORT: 6379
       STORAGE_TYPE: ${STORAGE_TYPE:-local}
+      AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID:-}
+      AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY:-}
+      AWS_REGION: ${AWS_REGION:-us-east-1}
+      AWS_BUCKET_NAME: ${AWS_BUCKET_NAME:-amz-staging-s3-bucket}
+      AWS_ENDPOINT_URL: ${AWS_ENDPOINT_URL:-}
       MEDIA_DIR: /app/media/uploads
       CORS_ORIGINS: '["http://localhost", "http://localhost:8080", "http://localhost:3000", "http://localhost:80", "http://127.0.0.1:8080", "http://127.0.0.1:3000", "http://127.0.0.1"]'
       INITIAL_ADMIN_EMAIL: ${INITIAL_ADMIN_EMAIL:-admin@pavilionrealty.com}
