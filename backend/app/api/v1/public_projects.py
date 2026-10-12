@@ -38,6 +38,7 @@ def to_project_card(p) -> ProjectCardResponse:
         area_unit=p.area_unit,
         rera_number=p.rera_number,
         primary_image_url=p.primary_image_url,
+        logo_url=p.logo_url,
         property_type_name=p.property_type.name if p.property_type else None,
         created_at=p.created_at,
     )

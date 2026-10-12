@@ -110,6 +110,9 @@ class Project(Base, TimestampMixin):
     og_image = Column(String(500), nullable=True)
     is_indexable = Column(Boolean, default=True, nullable=False)
 
+    # Branding
+    logo_url = Column(String(500), nullable=True)
+
     # Creator
     created_by = Column(Integer, ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
 

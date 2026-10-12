@@ -171,6 +171,9 @@ class ProjectBase(BaseModel):
     og_image: Optional[str] = None
     is_indexable: bool = True
 
+    # Branding
+    logo_url: Optional[str] = None
+
     @field_validator(
         "possession_date",
         "launch_date",
@@ -258,6 +261,7 @@ class ProjectUpdate(BaseModel):
     og_image: Optional[str] = None
     is_indexable: Optional[bool] = None
     amenity_ids: Optional[List[int]] = None
+    logo_url: Optional[str] = None
 
     @field_validator(
         "possession_date",
@@ -307,6 +311,7 @@ class ProjectCardResponse(BaseModel):
     area_unit: str
     rera_number: Optional[str] = None
     primary_image_url: Optional[str] = None
+    logo_url: Optional[str] = None
     property_type_name: Optional[str] = None
     created_at: datetime
     model_config = ConfigDict(from_attributes=True)

@@ -135,6 +135,7 @@ export default function ProjectFormTabs({ initialData, isEdit = false }: Props) 
   // Upload states
   const [uploadingImage, setUploadingImage] = useState(false);
   const [uploadingDoc, setUploadingDoc] = useState(false);
+  const [uploadingLogo, setUploadingLogo] = useState(false);
   const [docTitle, setDocTitle] = useState("Official Brochure");
 
   // Load dropdown options
@@ -305,6 +306,28 @@ export default function ProjectFormTabs({ initialData, isEdit = false }: Props) 
     }
   };
 
+  const handleLogoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (!initialData?.id) {
+      alert("Please save the basic project information first before uploading the logo.");
+      return;
+    }
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploadingLogo(true);
+    const fd = new FormData();
+    fd.append("file", file);
+
+    try {
+      await apiService.adminProjects.uploadLogo(initialData.id, fd);
+      window.location.reload();
+    } catch (err: any) {
+      alert(err.response?.data?.message || "Logo upload failed.");
+    } finally {
+      setUploadingLogo(false);
+    }
+  };
+
   const tabs = [
     { id: 1, name: "1. Basic Info", icon: Building2 },
     { id: 2, name: "2. Location", icon: MapPin },
@@ -451,6 +474,57 @@ export default function ProjectFormTabs({ initialData, isEdit = false }: Props) 
                   />
                   <span>Display on Homepage Featured Carousel</span>
                 </label>
+              </div>
+
+              {/* Logo Upload */}
+              <div className="sm:col-span-2">
+                <label className="block text-xs font-semibold text-slate-300 mb-1">
+                  Project Logo
+                </label>
+                {isEdit && initialData?.logo_url && (
+                  <div className="mb-3 flex items-center gap-3 p-3 bg-slate-900 rounded-xl border border-slate-700">
+                    <div className="w-10 h-10 rounded-lg overflow-hidden bg-slate-800 flex-shrink-0">
+                      <Image
+                        src={initialData.logo_url}
+                        alt={`${formData.name} logo`}
+                        width={40}
+                        height={40}
+                        className="object-contain"
+                      />
+                    </div>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-medium text-white truncate">Current Logo</p>
+                      <p className="text-[10px] text-slate-400">Upload a new logo to replace</p>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        if (confirm("Are you sure you want to delete the current logo?")) {
+                          try {
+                            await apiService.adminProjects.deleteLogo(initialData.id!);
+                            window.location.reload();
+                          } catch (err: any) {
+                            alert(err.response?.data?.message || "Failed to delete logo.");
+                          }
+                        }
+                      }}
+                      className="text-slate-400 hover:text-rose-400 p-1.5 rounded-lg hover:bg-slate-800 transition-colors"
+                      title="Delete Logo"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
+                )}
+                <div className="p-6 bg-slate-900 rounded-2xl border-2 border-dashed border-slate-700 text-center">
+                  <ImageIcon className="w-8 h-8 text-amber-400 mx-auto mb-2" />
+                  <p className="text-xs text-slate-300 font-semibold mb-1">Upload Project Logo</p>
+                  <p className="text-[11px] text-slate-500 mb-4">Recommended: Square PNG with transparent background, max 512x512px</p>
+                  <label className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold px-4 py-2 rounded-xl text-xs cursor-pointer">
+                    {uploadingLogo ? <Loader2 className="w-4 h-4 animate-spin" /> : <Plus className="w-4 h-4" />}
+                    <span>{uploadingLogo ? "Uploading Logo..." : "Select Logo File"}</span>
+                    <input type="file" accept="image/*" onChange={handleLogoUpload} className="hidden" />
+                  </label>
+                </div>
               </div>
             </div>
 

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { MapPin, BedDouble, ShieldCheck, ArrowRight, Building } from "lucide-react";
+import { MapPin, BedDouble, ShieldCheck, ArrowRight, Building, Image as ImageIcon } from "lucide-react";
 import { ProjectCard as ProjectCardType } from "@/types";
 import { formatPrice } from "@/utils/format";
 
@@ -31,8 +31,24 @@ export default function ProjectCard({ project }: Props) {
         />
         <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-black/30" />
 
+        {/* Project Logo Badge - Top Left */}
+        {project.logo_url && (
+          <div className="absolute top-3 left-3 z-10">
+            <div className="w-12 h-12 rounded-lg bg-white/95 backdrop-blur-sm p-1 shadow-lg border border-slate-200/50 flex items-center justify-center">
+              <Image
+                src={project.logo_url}
+                alt={`${project.name} logo`}
+                width={28}
+                height={28}
+                className="object-contain"
+              />
+            </div>
+          </div>
+        )}
+
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-wrap gap-2">
+          {project.logo_url && <div className="w-12" />} {/* Spacer for logo - width only */}
           {project.featured && (
             <span className="bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-bold text-[10px] tracking-wider uppercase px-2.5 py-1 rounded-md shadow-md">
               Featured

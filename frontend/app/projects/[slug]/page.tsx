@@ -102,6 +102,7 @@ export default function ProjectDetailPage() {
     name: project.name,
     description: project.short_description,
     image: project.primary_image_url,
+    logo: project.logo_url,
     offers: {
       "@type": "AggregateOffer",
       priceCurrency: project.currency,
@@ -144,6 +145,18 @@ export default function ProjectDetailPage() {
         <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-6 border-b border-slate-200">
           <div>
             <div className="flex flex-wrap items-center gap-2.5 mb-2.5">
+              {/* Project Logo */}
+              {project.logo_url && (
+                <div className="w-10 h-10 rounded-lg bg-white border border-slate-200 flex items-center justify-center shadow-sm">
+                  <Image
+                    src={project.logo_url}
+                    alt={`${project.name} logo`}
+                    width={28}
+                    height={28}
+                    className="object-contain"
+                  />
+                </div>
+              )}
               <span className="bg-amber-100 text-amber-800 text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded">
                 {project.developer_name}
               </span>

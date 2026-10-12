@@ -240,6 +240,45 @@ def upload_project_media(
     )
 
 
+# --- Logo Management ---
+@router.post("/{project_id}/logo", response_model=APIResponse[ProjectDetailResponse])
+def upload_project_logo(
+    project_id: int,
+    file: UploadFile = File(...),
+    current_user: User = Depends(require_permission("media.upload")),
+    db: Session = Depends(get_db),
+):
+    project = project_service.get_project_by_id(db, project_id)
+    processed = media_service.process_and_save_image(file, subfolder=f"projects/{project_id}/logo")
+
+    # Delete old logo if exists
+    if project.logo_url:
+        storage_service.delete_file(project.logo_url)
+
+    project.logo_url = processed["file_url"]
+    db.commit()
+    db.refresh(project)
+
+    return APIResponse(
+        message="Logo uploaded successfully",
+        data=ProjectDetailResponse.model_validate(project),
+    )
+
+
+@router.delete("/{project_id}/logo", response_model=APIResponse[None])
+def delete_project_logo(
+    project_id: int,
+    current_user: User = Depends(require_permission("media.delete")),
+    db: Session = Depends(get_db),
+):
+    project = project_service.get_project_by_id(db, project_id)
+    if project.logo_url:
+        storage_service.delete_file(project.logo_url)
+        project.logo_url = None
+        db.commit()
+    return APIResponse(message="Logo deleted successfully", data=None)
+
+
 @router.delete("/media/{media_id}", response_model=APIResponse[None])
 def delete_project_media(
     media_id: int,

@@ -149,6 +149,7 @@ export interface ProjectCard {
   area_unit: string;
   rera_number?: string;
   primary_image_url?: string;
+  logo_url?: string;
   property_type_name?: string;
   created_at: string;
 }
@@ -194,6 +195,7 @@ export interface ProjectDetail {
   launch_date?: string;
   rera_number?: string;
   primary_image_url?: string;
+  logo_url?: string;
   seo_title?: string;
   meta_description?: string;
   canonical_url?: string;

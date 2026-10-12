@@ -306,6 +306,16 @@ export const apiService = {
       });
       return res.data;
     },
+    uploadLogo: async (id: number, formData: FormData) => {
+      const res = await api.post<APIResponse<any>>(`/admin/projects/${id}/logo`, formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      return res.data;
+    },
+    deleteLogo: async (id: number) => {
+      const res = await api.delete<APIResponse<null>>(`/admin/projects/${id}/logo`);
+      return res.data;
+    },
     deleteMedia: async (mediaId: number) => {
       const res = await api.delete<APIResponse<null>>(`/admin/projects/media/${mediaId}`);
       return res.data;
