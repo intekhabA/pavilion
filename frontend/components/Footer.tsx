@@ -123,10 +123,10 @@ export default function Footer() {
               <li className="flex items-center gap-2.5">
                 <Phone className="w-4 h-4 text-amber-400 flex-shrink-0" />
                 <a
-                  href={`tel:${settings.contact_phone?.replace(/[^0-9+]/g, "") || "+918007284546"}`}
+                  href={`tel:${settings.contact_phone?.replace(/[^0-9+]/g, "") || "+91 9999386015"}`}
                   className="hover:text-amber-400 transition-colors"
                 >
-                  {settings.contact_phone || "+91 800-PAVILION / +91 98765 43210"}
+                  {settings.contact_phone || "+91 9999386015"}
                 </a>
               </li>
               <li className="flex items-center gap-2.5">
@@ -135,7 +135,7 @@ export default function Footer() {
                   href={`mailto:${settings.contact_email || "concierge@pavilionrealty.com"}`}
                   className="hover:text-amber-400 transition-colors"
                 >
-                  {settings.contact_email || "concierge@pavilionrealty.com"}
+                  {settings.contact_email || "contact@pavilion360.in"}
                 </a>
               </li>
             </ul>
@@ -152,7 +152,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-6 border-t border-slate-800/40 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
-          <p>© {new Date().getFullYear()} {settings.site_name || "Pavilion 360"} Advisory Pvt. Ltd. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} Surf Digita All rights reserved.</p>
           <div className="flex items-center gap-6">
             <Link href="/privacy-policy" className="hover:text-slate-200 transition-colors">
               Privacy Policy

@@ -115,7 +115,7 @@ Admin CMS will be available at: `http://localhost:3000/admin`
 Upon running `scripts/seed.py`, the following Super Admin user is created:
 
 - **URL**: `http://localhost:3000/admin/login`
-- **Email**: `admin@pavilionrealty.com`
+- **Email**: `amit@pavilion360.in`
 - **Password**: `Admin@Pavilion2025!`
 - **Role**: `Super Admin` (full unrestricted permissions)
 

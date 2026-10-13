@@ -40,7 +40,7 @@
    MYSQL_PASSWORD=<generated-db-pass>
    MYSQL_ROOT_PASSWORD=<generated-root-pass>
    REDIS_PASSWORD=<generated-redis-pass>
-   INITIAL_ADMIN_EMAIL=admin@pavilionrealty.com
+   INITIAL_ADMIN_EMAIL=amit@pavilion360.in
    INITIAL_ADMIN_PASSWORD=SuperStrongAdminPassword2025!
    ```
 

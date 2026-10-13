@@ -8,7 +8,7 @@ import { apiService } from "@/services/api";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("admin@pavilionrealty.com");
+  const [email, setEmail] = useState("amit@pavilion360.in");
   const [password, setPassword] = useState("Admin@Pavilion2025!");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
@@ -89,7 +89,7 @@ export default function AdminLoginPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="admin@pavilionrealty.com"
+                  placeholder="amit@pavilion360.in"
                   className="w-full bg-slate-950 border border-slate-700 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 transition-colors"
                 />
               </div>

@@ -71,7 +71,7 @@ services:
       AWS_ENDPOINT_URL: ${AWS_ENDPOINT_URL:-}
       MEDIA_DIR: /app/media/uploads
       CORS_ORIGINS: '["http://localhost", "http://localhost:8080", "http://localhost:3000", "http://localhost:80", "http://127.0.0.1:8080", "http://127.0.0.1:3000", "http://127.0.0.1"]'
-      INITIAL_ADMIN_EMAIL: ${INITIAL_ADMIN_EMAIL:-admin@pavilionrealty.com}
+      INITIAL_ADMIN_EMAIL: ${INITIAL_ADMIN_EMAIL:-amit@pavilion360.in}
       INITIAL_ADMIN_PASSWORD: ${INITIAL_ADMIN_PASSWORD:-Admin@Pavilion2025!}
     ports:
       - "8000:8000"

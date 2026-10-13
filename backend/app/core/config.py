@@ -92,10 +92,10 @@ class Settings(BaseSettings):
     SMTP_PASSWORD: str = ""
     SMTP_FROM_EMAIL: str = "no-reply@pavilionrealty.com"
     SMTP_FROM_NAME: str = "Pavilion 360"
-    ADMIN_NOTIFICATION_EMAIL: str = "admin@pavilionrealty.com"
+    ADMIN_NOTIFICATION_EMAIL: str = "amit@pavilion360.in"
 
     # Initial Admin Seed Credentials
-    INITIAL_ADMIN_EMAIL: str = "admin@pavilionrealty.com"
+    INITIAL_ADMIN_EMAIL: str = "amit@pavilion360.in"
     INITIAL_ADMIN_PASSWORD: str = "Admin@Pavilion2025!"
     INITIAL_ADMIN_FIRST_NAME: str = "System"
     INITIAL_ADMIN_LAST_NAME: str = "Admin"
