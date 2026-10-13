@@ -11,6 +11,7 @@ from app.schemas.project import (
     ProjectFilterParams,
 )
 from app.services.project_service import project_service
+from app.services.storage_service import storage_service
 
 router = APIRouter(prefix="/projects", tags=["Public Projects"], dependencies=[Depends(rate_limit_general)])
 
@@ -37,8 +38,8 @@ def to_project_card(p) -> ProjectCardResponse:
         area_to=p.area_to,
         area_unit=p.area_unit,
         rera_number=p.rera_number,
-        primary_image_url=p.primary_image_url,
-        logo_url=p.logo_url,
+        primary_image_url=storage_service.get_presigned_url(p.primary_image_url) if p.primary_image_url else None,
+        logo_url=storage_service.get_presigned_url(p.logo_url) if p.logo_url else None,
         property_type_name=p.property_type.name if p.property_type else None,
         created_at=p.created_at,
     )
@@ -106,9 +107,29 @@ def get_featured_projects(limit: int = Query(default=6, ge=1, le=20), db: Sessio
 @router.get("/{slug}", response_model=APIResponse[ProjectDetailResponse])
 def get_project_by_slug(slug: str, db: Session = Depends(get_db)):
     project = project_service.get_project_by_slug(db, slug=slug, public_only=True)
+    
+    # Create detail response with pre-signed URLs for S3 objects
+    detail_data = ProjectDetailResponse.model_validate(project)
+    if detail_data.primary_image_url:
+        detail_data.primary_image_url = storage_service.get_presigned_url(detail_data.primary_image_url)
+    if detail_data.logo_url:
+        detail_data.logo_url = storage_service.get_presigned_url(detail_data.logo_url)
+    # Also handle media URLs
+    for media in detail_data.media:
+        if media.file_url:
+            media.file_url = storage_service.get_presigned_url(media.file_url)
+        if media.thumbnail_url:
+            media.thumbnail_url = storage_service.get_presigned_url(media.thumbnail_url)
+        if media.webp_url:
+            media.webp_url = storage_service.get_presigned_url(media.webp_url)
+    # Handle documents
+    for doc in detail_data.documents:
+        if doc.file_url:
+            doc.file_url = storage_service.get_presigned_url(doc.file_url)
+    
     return APIResponse(
         message="Project details retrieved",
-        data=ProjectDetailResponse.model_validate(project),
+        data=detail_data,
     )
 
 

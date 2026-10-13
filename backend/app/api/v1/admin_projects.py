@@ -77,9 +77,29 @@ def get_project_by_id(
     db: Session = Depends(get_db),
 ):
     project = project_service.get_project_by_id(db, project_id=project_id)
+    
+    # Create detail response with pre-signed URLs for S3 objects
+    detail_data = ProjectDetailResponse.model_validate(project)
+    if detail_data.primary_image_url:
+        detail_data.primary_image_url = storage_service.get_presigned_url(detail_data.primary_image_url)
+    if detail_data.logo_url:
+        detail_data.logo_url = storage_service.get_presigned_url(detail_data.logo_url)
+    # Also handle media URLs
+    for media in detail_data.media:
+        if media.file_url:
+            media.file_url = storage_service.get_presigned_url(media.file_url)
+        if media.thumbnail_url:
+            media.thumbnail_url = storage_service.get_presigned_url(media.thumbnail_url)
+        if media.webp_url:
+            media.webp_url = storage_service.get_presigned_url(media.webp_url)
+    # Handle documents
+    for doc in detail_data.documents:
+        if doc.file_url:
+            doc.file_url = storage_service.get_presigned_url(doc.file_url)
+    
     return APIResponse(
         message="Project retrieved",
-        data=ProjectDetailResponse.model_validate(project),
+        data=detail_data,
     )
 
 
@@ -96,9 +116,24 @@ def create_project(
         db, action="PROJECT_CREATE", entity="project", entity_id=str(project.id),
         user_id=current_user.id, ip_address=ip, details={"name": project.name, "slug": project.slug}
     )
+    detail_data = ProjectDetailResponse.model_validate(project)
+    if detail_data.primary_image_url:
+        detail_data.primary_image_url = storage_service.get_presigned_url(detail_data.primary_image_url)
+    if detail_data.logo_url:
+        detail_data.logo_url = storage_service.get_presigned_url(detail_data.logo_url)
+    for media in detail_data.media:
+        if media.file_url:
+            media.file_url = storage_service.get_presigned_url(media.file_url)
+        if media.thumbnail_url:
+            media.thumbnail_url = storage_service.get_presigned_url(media.thumbnail_url)
+        if media.webp_url:
+            media.webp_url = storage_service.get_presigned_url(media.webp_url)
+    for doc in detail_data.documents:
+        if doc.file_url:
+            doc.file_url = storage_service.get_presigned_url(doc.file_url)
     return APIResponse(
         message="Project created successfully",
-        data=ProjectDetailResponse.model_validate(project),
+        data=detail_data,
     )
 
 
@@ -116,9 +151,24 @@ def update_project(
         db, action="PROJECT_UPDATE", entity="project", entity_id=str(project.id),
         user_id=current_user.id, ip_address=ip, details={"name": project.name}
     )
+    detail_data = ProjectDetailResponse.model_validate(project)
+    if detail_data.primary_image_url:
+        detail_data.primary_image_url = storage_service.get_presigned_url(detail_data.primary_image_url)
+    if detail_data.logo_url:
+        detail_data.logo_url = storage_service.get_presigned_url(detail_data.logo_url)
+    for media in detail_data.media:
+        if media.file_url:
+            media.file_url = storage_service.get_presigned_url(media.file_url)
+        if media.thumbnail_url:
+            media.thumbnail_url = storage_service.get_presigned_url(media.thumbnail_url)
+        if media.webp_url:
+            media.webp_url = storage_service.get_presigned_url(media.webp_url)
+    for doc in detail_data.documents:
+        if doc.file_url:
+            doc.file_url = storage_service.get_presigned_url(doc.file_url)
     return APIResponse(
         message="Project updated successfully",
-        data=ProjectDetailResponse.model_validate(project),
+        data=detail_data,
     )
 
 
