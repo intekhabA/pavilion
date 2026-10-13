@@ -43,6 +43,10 @@ class StorageService:
         # Strip query parameters first (in case it's already a pre-signed URL)
         clean_url = file_url.split("?")[0]
         
+        # If it's already just a relative path (S3 key), return it directly
+        if not clean_url.startswith("http") and "/" in clean_url and not clean_url.startswith("/"):
+            return clean_url
+        
         # Handle different URL formats - try multiple region patterns
         patterns = [
             f"{self.bucket_name}.s3.{self.region}.amazonaws.com/",
