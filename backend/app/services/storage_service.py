@@ -40,6 +40,9 @@ class StorageService:
         """Extract S3 key from various URL formats."""
         if not file_url:
             return None
+        # Strip query parameters first (in case it's already a pre-signed URL)
+        clean_url = file_url.split("?")[0]
+        
         # Handle different URL formats - try multiple region patterns
         patterns = [
             f"{self.bucket_name}.s3.{self.region}.amazonaws.com/",
@@ -52,8 +55,8 @@ class StorageService:
             patterns.append(f"{self.bucket_name}.s3.{r}.amazonaws.com/")
         
         for pattern in patterns:
-            if pattern in file_url:
-                return file_url.split(pattern)[-1]
+            if pattern in clean_url:
+                return clean_url.split(pattern)[-1]
         return None
 
     def _generate_presigned_url(self, s3_key: str) -> str:
@@ -72,7 +75,11 @@ class StorageService:
             return ""
 
     def save_file(self, file_obj: BinaryIO, filename: str, subfolder: str = "") -> str:
-        """Saves a binary file to S3 or local disk and returns the accessible URL path."""
+        """Saves a binary file to S3 or local disk and returns the storage path/key.
+        
+        For S3: returns the S3 key (relative path) - use get_presigned_url() to get accessible URL
+        For local: returns the media URL path
+        """
         relative_path = f"{subfolder}/{filename}".strip("/")
 
         # 1. Try S3 upload if configured
@@ -94,8 +101,9 @@ class StorageService:
                     ExtraArgs=extra_args,
                 )
 
-                # Generate pre-signed URL for private bucket access
-                return self._generate_presigned_url(relative_path)
+                # Return the S3 key (relative path) for storage in database
+                # Pre-signed URLs should be generated at read time via get_presigned_url()
+                return relative_path
             except Exception as e:
                 logger.error(f"S3 upload error for {relative_path}: {e}. Falling back to local disk.", exc_info=True)
                 # Fall through to local disk save as safeguard
@@ -140,7 +148,10 @@ class StorageService:
         return False
 
     def get_presigned_url(self, file_url: str) -> str:
-        """Returns a fresh pre-signed URL for an S3 object, or the original URL for local files."""
+        """Returns a fresh pre-signed URL for an S3 object, or the original URL for local files.
+        
+        Accepts either a full URL, a pre-signed URL, or just an S3 key (relative path).
+        """
         if not file_url:
             return ""
         
@@ -150,7 +161,11 @@ class StorageService:
             
         # For S3, extract key and generate fresh pre-signed URL
         if self.storage_type == "s3" and self.s3_client:
+            # Try to extract S3 key from various formats
             s3_key = self._get_s3_key(file_url)
+            # If no key found via patterns, the file_url might already be just the key (relative path)
+            if not s3_key and "/" in file_url and not file_url.startswith("http"):
+                s3_key = file_url.split("?")[0]  # Handle case where it's just the key
             if s3_key:
                 return self._generate_presigned_url(s3_key)
         
