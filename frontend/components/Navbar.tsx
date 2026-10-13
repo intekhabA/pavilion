@@ -98,13 +98,6 @@ export default function Navbar() {
             >
               Consult an Expert
             </Link>
-            <Link
-              href="/admin/login"
-              className="text-xs text-slate-400 hover:text-slate-200 transition-colors pl-2 border-l border-slate-800"
-              title="Admin Portal"
-            >
-              Admin
-            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -150,13 +143,6 @@ export default function Navbar() {
                 className="text-center bg-gradient-to-r from-amber-500 to-amber-600 text-slate-950 font-semibold text-sm py-3 rounded-lg shadow-md"
               >
                 Schedule Free Site Visit
-              </Link>
-              <Link
-                href="/admin/login"
-                onClick={() => setMobileMenuOpen(false)}
-                className="text-center text-xs text-slate-400 py-2"
-              >
-                Admin Portal Login
               </Link>
             </div>
           </nav>

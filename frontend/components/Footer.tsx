@@ -163,9 +163,6 @@ export default function Footer() {
             <Link href="/sitemap.xml" className="hover:text-slate-200 transition-colors">
               Sitemap
             </Link>
-            <Link href="/admin/login" className="hover:text-amber-400 transition-colors">
-              Staff Portal
-            </Link>
           </div>
         </div>
       </div>
