@@ -544,16 +544,41 @@ export const downloadFile = async (
   docId?: number,
 ): Promise<void> => {
   const url = docId ? `/projects/documents/${docId}/download` : fileUrl;
-  const res = await api.get(url, { responseType: "blob" });
-  const blob = new Blob([res.data as BlobPart]);
-  const downloadUrl = window.URL.createObjectURL(blob);
-  const link = document.createElement("a");
-  link.href = downloadUrl;
-  link.setAttribute("download", fileName);
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  window.URL.revokeObjectURL(downloadUrl);
+  
+  try {
+    console.log(`[downloadFile] Starting download from: ${url}`);
+    const res = await api.get(url, { responseType: "blob" });
+    console.log(`[downloadFile] Response received, status: ${res.status}, content-type: ${res.headers['content-type']}`);
+    
+    const blob = new Blob([res.data as BlobPart], { type: res.headers['content-type'] || 'application/pdf' });
+    console.log(`[downloadFile] Blob created, size: ${blob.size}, type: ${blob.type}`);
+    
+    if (blob.size === 0) {
+      throw new Error('Downloaded file is empty');
+    }
+    
+    const downloadUrl = window.URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = downloadUrl;
+    link.setAttribute("download", fileName);
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    window.URL.revokeObjectURL(downloadUrl);
+    
+    console.log(`[downloadFile] Download triggered successfully for: ${fileName}`);
+  } catch (error: any) {
+    console.error(`[downloadFile] Download failed:`, error);
+    // Try fallback: open in new tab
+    if (docId) {
+      console.log(`[downloadFile] Attempting fallback: opening in new tab`);
+      window.open(`/projects/documents/${docId}/download`, '_blank');
+    } else {
+      window.open(fileUrl, '_blank');
+    }
+    throw error;
+  }
 };
 
 export default api;

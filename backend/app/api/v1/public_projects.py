@@ -162,14 +162,29 @@ def download_project_document(doc_id: int, db: Session = Depends(get_db)):
     file_url = doc.file_url
     file_name = doc.file_name or "document.pdf"
 
+    # Generate pre-signed URL for S3 objects to ensure access
+    from app.services.storage_service import storage_service
+    presigned_url = storage_service.get_presigned_url(file_url)
+    
+    # Use the pre-signed URL if available, otherwise fall back to original URL
+    fetch_url = presigned_url if presigned_url else file_url
+
     def iter_file():
+        import logging
+        import tempfile
+        import sys
+        logger = logging.getLogger("pavilion.document_download")
+        print(f"DEBUG: Starting iter_file for doc_id={doc_id}, fetch_url={fetch_url[:100]}...", file=sys.stderr, flush=True)
+        logger.info(f"Starting iter_file for doc_id={doc_id}, fetch_url={fetch_url[:100]}...")
         try:
-            if file_url.startswith(settings.MEDIA_URL_PREFIX):
+            if fetch_url.startswith(settings.MEDIA_URL_PREFIX):
                 # Serve local file directly from disk
-                relative_path = file_url[len(settings.MEDIA_URL_PREFIX):].lstrip("/")
+                relative_path = fetch_url[len(settings.MEDIA_URL_PREFIX):].lstrip("/")
                 full_path = os.path.join(settings.MEDIA_DIR, relative_path)
                 if not os.path.exists(full_path):
                     raise HTTPException(status_code=404, detail="Document file not found on server.")
+                print(f"DEBUG: Reading local file: {full_path}", file=sys.stderr, flush=True)
+                logger.info(f"Reading local file: {full_path}")
                 with open(full_path, "rb") as f:
                     while True:
                         chunk = f.read(1024 * 1024)
@@ -178,13 +193,38 @@ def download_project_document(doc_id: int, db: Session = Depends(get_db)):
                         yield chunk
             else:
                 # Fetch external URL server-side (no CORS restriction server-to-server)
-                with httpx.stream("GET", file_url, follow_redirects=True, timeout=60) as resp:
-                    resp.raise_for_status()
-                    for chunk in resp.iter_bytes():
+                print(f"DEBUG: Fetching from external URL: {fetch_url[:100]}...", file=sys.stderr, flush=True)
+                logger.info(f"Fetching from external URL: {fetch_url[:100]}...")
+                # Download to temp file first for more reliable streaming
+                with tempfile.NamedTemporaryFile(delete=False) as tmp_file:
+                    temp_path = tmp_file.name
+                    with httpx.stream("GET", fetch_url, follow_redirects=True, timeout=60) as resp:
+                        print(f"DEBUG: Response status: {resp.status_code}", file=sys.stderr, flush=True)
+                        logger.info(f"Response status: {resp.status_code}")
+                        resp.raise_for_status()
+                        for chunk in resp.iter_bytes():
+                            tmp_file.write(chunk)
+                
+                # Now stream from temp file
+                print(f"DEBUG: Streaming from temp file: {temp_path}", file=sys.stderr, flush=True)
+                logger.info(f"Streaming from temp file: {temp_path}")
+                with open(temp_path, "rb") as f:
+                    while True:
+                        chunk = f.read(1024 * 1024)
+                        if not chunk:
+                            break
                         yield chunk
+                
+                # Clean up temp file
+                try:
+                    os.unlink(temp_path)
+                except:
+                    pass
         except HTTPException:
             raise
         except Exception as exc:
+            print(f"DEBUG: Error in iter_file: {exc}", file=sys.stderr, flush=True)
+            logger.error(f"Error in iter_file: {exc}", exc_info=True)
             raise HTTPException(status_code=502, detail=f"Failed to fetch document: {exc}")
 
     media_type = doc.mime_type or "application/octet-stream"
