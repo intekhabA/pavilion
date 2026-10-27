@@ -529,4 +529,31 @@ export const apiService = {
   },
 };
 
+/**
+ * Download a file and trigger a browser save-as download.
+ *
+ * When `docId` is provided, the file is proxied through the backend
+ * (`/projects/documents/{docId}/download`) so the request stays same-origin
+ * and avoids CORS "Network Error" for externally hosted documents (e.g. the
+ * W3C sample PDFs used by seeded brochure documents). Otherwise `fileUrl` is
+ * fetched directly.
+ */
+export const downloadFile = async (
+  fileUrl: string,
+  fileName: string,
+  docId?: number,
+): Promise<void> => {
+  const url = docId ? `/projects/documents/${docId}/download` : fileUrl;
+  const res = await api.get(url, { responseType: "blob" });
+  const blob = new Blob([res.data as BlobPart]);
+  const downloadUrl = window.URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = downloadUrl;
+  link.setAttribute("download", fileName);
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.URL.revokeObjectURL(downloadUrl);
+};
+
 export default api;

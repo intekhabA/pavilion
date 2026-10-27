@@ -46,6 +46,7 @@ export default function ProjectDetailPage() {
   const [activeImage, setActiveImage] = useState<string>("");
   const [activeBhkTab, setActiveBhkTab] = useState<number>(0);
   const [brochureModalOpen, setBrochureModalOpen] = useState(false);
+  const [brochureDoc, setBrochureDoc] = useState<{ id?: number; file_url: string; title: string } | null>(null);
 
   useEffect(() => {
     async function loadProject() {
@@ -447,7 +448,14 @@ export default function ProjectDetailPage() {
                         </div>
                       </div>
                       <button
-                        onClick={() => setBrochureModalOpen(true)}
+                        onClick={() => {
+                          setBrochureDoc({
+                            id: doc.id,
+                            file_url: doc.file_url,
+                            title: doc.title || "brochure",
+                          });
+                          setBrochureModalOpen(true);
+                        }}
                         className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-slate-300 text-xs font-semibold text-slate-700 hover:bg-slate-100 transition-colors"
                       >
                         <Download className="w-3.5 h-3.5" />
@@ -523,6 +531,10 @@ export default function ProjectDetailPage() {
         projectId={project.id}
         projectName={project.name}
         title={`Download Official Brochure & Plans: ${project.name}`}
+        docFileUrl={brochureDoc?.file_url ?? undefined}
+        docFileName={brochureDoc?.title ?? undefined}
+        docId={brochureDoc?.id ?? undefined}
+        onDocDownloaded={() => setBrochureDoc(null)}
       />
     </div>
   );

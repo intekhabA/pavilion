@@ -9,9 +9,23 @@ interface Props {
   projectId?: number;
   projectName?: string;
   title?: string;
+  docFileUrl?: string;
+  docFileName?: string;
+  docId?: number;
+  onDocDownloaded?: () => void;
 }
 
-export default function EnquiryModal({ isOpen, onClose, projectId, projectName, title }: Props) {
+export default function EnquiryModal({
+  isOpen,
+  onClose,
+  projectId,
+  projectName,
+  title,
+  docFileUrl,
+  docFileName,
+  docId,
+  onDocDownloaded,
+}: Props) {
   if (!isOpen) return null;
 
   return (
@@ -38,7 +52,15 @@ export default function EnquiryModal({ isOpen, onClose, projectId, projectName, 
 
         {/* Form Body */}
         <div className="p-6">
-          <EnquiryForm projectId={projectId} projectName={projectName} onSuccess={() => setTimeout(onClose, 3000)} />
+          <EnquiryForm
+            projectId={projectId}
+            projectName={projectName}
+            docFileUrl={docFileUrl}
+            docFileName={docFileName}
+            docId={docId}
+            onDocDownloaded={onDocDownloaded}
+            onSuccess={() => setTimeout(onClose, 3000)}
+          />
         </div>
       </div>
     </div>

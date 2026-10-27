@@ -1,8 +1,12 @@
 import math
+import os
 from typing import List, Optional
 from decimal import Decimal
-from fastapi import APIRouter, Depends, Query
+from fastapi import APIRouter, Depends, Query, HTTPException
+from fastapi.responses import StreamingResponse
 from sqlalchemy.orm import Session
+import httpx
+from app.core.config import settings
 from app.api.dependencies import get_db, rate_limit_general
 from app.schemas.common import APIResponse, PaginatedData
 from app.schemas.project import (
@@ -12,6 +16,7 @@ from app.schemas.project import (
 )
 from app.services.project_service import project_service
 from app.services.storage_service import storage_service
+from app.models.project import ProjectDocument
 
 router = APIRouter(prefix="/projects", tags=["Public Projects"], dependencies=[Depends(rate_limit_general)])
 
@@ -139,3 +144,55 @@ def get_similar_projects(slug: str, limit: int = Query(default=4, ge=1, le=10), 
     similar = project_service.get_similar_projects(db, project=project, limit=limit)
     cards = [to_project_card(p) for p in similar]
     return APIResponse(message="Similar projects retrieved", data=cards)
+
+
+@router.get("/documents/{doc_id}/download")
+def download_project_document(doc_id: int, db: Session = Depends(get_db)):
+    """Proxy a project document download so the browser can save it same-origin.
+
+    The frontend fetches this endpoint (localhost) instead of an external URL,
+    avoiding CORS "Network Error" when the document is hosted on a third party.
+    The file is retrieved server-side and streamed back with an attachment
+    disposition so the browser triggers a save-as download.
+    """
+    doc = db.query(ProjectDocument).filter(ProjectDocument.id == doc_id).first()
+    if not doc:
+        raise HTTPException(status_code=404, detail="Document not found.")
+
+    file_url = doc.file_url
+    file_name = doc.file_name or "document.pdf"
+
+    def iter_file():
+        try:
+            if file_url.startswith(settings.MEDIA_URL_PREFIX):
+                # Serve local file directly from disk
+                relative_path = file_url[len(settings.MEDIA_URL_PREFIX):].lstrip("/")
+                full_path = os.path.join(settings.MEDIA_DIR, relative_path)
+                if not os.path.exists(full_path):
+                    raise HTTPException(status_code=404, detail="Document file not found on server.")
+                with open(full_path, "rb") as f:
+                    while True:
+                        chunk = f.read(1024 * 1024)
+                        if not chunk:
+                            break
+                        yield chunk
+            else:
+                # Fetch external URL server-side (no CORS restriction server-to-server)
+                with httpx.stream("GET", file_url, follow_redirects=True, timeout=60) as resp:
+                    resp.raise_for_status()
+                    for chunk in resp.iter_bytes():
+                        yield chunk
+        except HTTPException:
+            raise
+        except Exception as exc:
+            raise HTTPException(status_code=502, detail=f"Failed to fetch document: {exc}")
+
+    media_type = doc.mime_type or "application/octet-stream"
+    return StreamingResponse(
+        iter_file(),
+        media_type=media_type,
+        headers={
+            "Content-Disposition": f'attachment; filename="{file_name}"',
+            "Access-Control-Expose-Headers": "Content-Disposition",
+        },
+    )

@@ -2,16 +2,29 @@
 
 import { useState } from "react";
 import { CheckCircle2, AlertCircle, Loader2, Send } from "lucide-react";
-import { apiService } from "@/services/api";
+import { apiService, downloadFile } from "@/services/api";
 
 interface Props {
   projectId?: number;
   projectName?: string;
+  docFileUrl?: string;
+  docFileName?: string;
+  docId?: number;
+  onDocDownloaded?: () => void;
   onSuccess?: () => void;
   compact?: boolean;
 }
 
-export default function EnquiryForm({ projectId, projectName, onSuccess, compact = false }: Props) {
+export default function EnquiryForm({
+  projectId,
+  projectName,
+  docFileUrl,
+  docFileName,
+  docId,
+  onDocDownloaded,
+  onSuccess,
+  compact = false,
+}: Props) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -56,6 +69,16 @@ export default function EnquiryForm({ projectId, projectName, onSuccess, compact
       if (res.success) {
         setSuccessRef(res.data.reference_id);
         if (onSuccess) onSuccess();
+
+        // Download the brochure PDF after successful enquiry submission
+        if (docFileUrl) {
+          const fileName = docFileName ? `${docFileName}.pdf` : "brochure.pdf";
+          downloadFile(docFileUrl, fileName, docId).finally(() => {
+            if (onDocDownloaded) onDocDownloaded();
+          });
+        } else if (onDocDownloaded) {
+          onDocDownloaded();
+        }
       } else {
         setErrorMessage(res.message || "Failed to submit enquiry.");
       }
