@@ -152,7 +152,7 @@ export default function Footer() {
 
         {/* Bottom Bar */}
         <div className="pt-6 border-t border-slate-800/40 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-400 gap-4">
-          <p>© {new Date().getFullYear()} Surf Digita All rights reserved.</p>
+          <p>© {new Date().getFullYear()} SurfDigita All rights reserved.</p>
           <div className="flex items-center gap-6">
             <Link href="/privacy-policy" className="hover:text-slate-200 transition-colors">
               Privacy Policy

@@ -8,8 +8,10 @@ import { apiService } from "@/services/api";
 
 export default function AdminLoginPage() {
   const router = useRouter();
-  const [email, setEmail] = useState("amit@pavilion360.in");
-  const [password, setPassword] = useState("Admin@Pavilion2025!");
+  //const [email, setEmail] = useState("amit@pavilion360.in");
+  //const [password, setPassword] = useState("Admin@Pavilion2025!");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
   const [loading, setLoading] = useState(false);
@@ -80,7 +82,7 @@ export default function AdminLoginPage() {
           <form onSubmit={handleLogin} className="space-y-5">
             <div>
               <label className="block text-xs font-semibold text-slate-300 mb-1.5">
-                Staff Email Address
+                Email Address
               </label>
               <div className="relative">
                 <Mail className="w-4 h-4 text-slate-400 absolute left-3.5 top-3.5" />
@@ -89,7 +91,7 @@ export default function AdminLoginPage() {
                   required
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  placeholder="amit@pavilion360.in"
+                  placeholder=""
                   className="w-full bg-slate-950 border border-slate-700 rounded-xl pl-10 pr-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 transition-colors"
                 />
               </div>
@@ -106,7 +108,7 @@ export default function AdminLoginPage() {
                   required
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  placeholder="••••••••••••"
+                  placeholder=""
                   className="w-full bg-slate-950 border border-slate-700 rounded-xl pl-10 pr-11 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-amber-400 transition-colors"
                 />
                 <button

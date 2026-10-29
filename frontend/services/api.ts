@@ -548,9 +548,10 @@ export const downloadFile = async (
   try {
     console.log(`[downloadFile] Starting download from: ${url}`);
     const res = await api.get(url, { responseType: "blob" });
-    console.log(`[downloadFile] Response received, status: ${res.status}, content-type: ${res.headers['content-type']}`);
+    const contentType = Array.isArray(res.headers['content-type']) ? res.headers['content-type'][0] : String(res.headers['content-type'] || 'application/pdf');
+    console.log(`[downloadFile] Response received, status: ${res.status}, content-type: ${contentType}`);
     
-    const blob = new Blob([res.data as BlobPart], { type: res.headers['content-type'] || 'application/pdf' });
+    const blob = new Blob([res.data as BlobPart], { type: contentType });
     console.log(`[downloadFile] Blob created, size: ${blob.size}, type: ${blob.type}`);
     
     if (blob.size === 0) {
