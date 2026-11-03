@@ -206,6 +206,7 @@ export default function ProjectDetailPage() {
                 alt={project.name}
                 fill
                 priority
+                sizes="(max-width: 1024px) 100vw, 75vw"
                 className="object-cover transition-all duration-500"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-black/20" />
@@ -226,6 +227,7 @@ export default function ProjectDetailPage() {
                       src={med.thumbnail_url || med.file_url}
                       alt={med.alt_text || project.name}
                       fill
+                      sizes="(max-width: 1024px) 112px, 280px"
                       className="object-cover"
                     />
                   </button>

@@ -58,15 +58,21 @@ class MediaService:
         # Convert palette/RGBA if saving as JPEG
         rgb_image = image.convert("RGB") if image.mode in ("RGBA", "P") else image
 
+        # Downscale large original images if width or height > 1920px
+        MAX_DIM = 1920
+        if rgb_image.width > MAX_DIM or rgb_image.height > MAX_DIM:
+            rgb_image.thumbnail((MAX_DIM, MAX_DIM), Image.Resampling.LANCZOS)
+            width, height = rgb_image.size
+
         # 4. Save original/optimized
         optimized_buffer = io.BytesIO()
-        rgb_image.save(optimized_buffer, format="JPEG", quality=88, optimize=True)
+        rgb_image.save(optimized_buffer, format="JPEG", quality=82, optimize=True)
         orig_filename = f"{safe_base_name}.jpg"
         file_url = storage_service.save_file(optimized_buffer, orig_filename, subfolder=subfolder)
 
         # 5. Generate WebP variant
         webp_buffer = io.BytesIO()
-        rgb_image.save(webp_buffer, format="WEBP", quality=85, method=6)
+        rgb_image.save(webp_buffer, format="WEBP", quality=80, method=6)
         webp_filename = f"{safe_base_name}.webp"
         webp_url = storage_service.save_file(webp_buffer, webp_filename, subfolder=subfolder)
 
@@ -74,7 +80,7 @@ class MediaService:
         thumb_image = rgb_image.copy()
         thumb_image.thumbnail((400, 300), Image.Resampling.LANCZOS)
         thumb_buffer = io.BytesIO()
-        thumb_image.save(thumb_buffer, format="WEBP", quality=80)
+        thumb_image.save(thumb_buffer, format="WEBP", quality=75)
         thumb_filename = f"{safe_base_name}_thumb.webp"
         thumbnail_url = storage_service.save_file(thumb_buffer, thumb_filename, subfolder=subfolder)
 
