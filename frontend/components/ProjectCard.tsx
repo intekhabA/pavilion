@@ -25,6 +25,7 @@ export default function ProjectCard({ project }: Props) {
           src={project.primary_image_url || "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=800"}
           alt={project.name}
           fill
+          unoptimized={Boolean(project.primary_image_url && project.primary_image_url.split("?")[0].endsWith(".webp"))}
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           className="object-cover group-hover:scale-105 transition-transform duration-500"
           loading="lazy"

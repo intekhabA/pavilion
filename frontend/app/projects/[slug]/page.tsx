@@ -56,7 +56,8 @@ export default function ProjectDetailPage() {
         const res = await apiService.publicProjects.getBySlug(slug);
         if (res.success && res.data) {
           setProject(res.data);
-          setActiveImage(res.data.primary_image_url || res.data.media?.[0]?.file_url || "");
+          const primaryMedia = res.data.media?.find((m: any) => m.is_primary) || res.data.media?.[0];
+          setActiveImage(primaryMedia?.webp_url || res.data.primary_image_url || primaryMedia?.file_url || "");
 
           // Load similar projects
           const simRes = await apiService.publicProjects.getSimilar(slug, 3);
@@ -206,6 +207,7 @@ export default function ProjectDetailPage() {
                 alt={project.name}
                 fill
                 priority
+                unoptimized={Boolean(activeImage && activeImage.split("?")[0].endsWith(".webp"))}
                 sizes="(max-width: 1024px) 100vw, 75vw"
                 className="object-cover transition-all duration-500"
               />
@@ -215,23 +217,30 @@ export default function ProjectDetailPage() {
             {/* Thumbnail Strip */}
             <div className="flex lg:flex-col gap-3 overflow-x-auto lg:overflow-y-auto max-h-[520px] pb-2 lg:pb-0">
               {project.media && project.media.length > 0 ? (
-                project.media.map((med, idx) => (
-                  <button
-                    key={med.id || idx}
-                    onClick={() => setActiveImage(med.file_url)}
-                    className={`relative w-28 lg:w-full h-24 rounded-xl overflow-hidden flex-shrink-0 border-2 transition-all ${
-                      activeImage === med.file_url ? "border-amber-500 scale-95 shadow-md" : "border-transparent opacity-70 hover:opacity-100"
-                    }`}
-                  >
-                    <Image
-                      src={med.thumbnail_url || med.file_url}
-                      alt={med.alt_text || project.name}
-                      fill
-                      sizes="(max-width: 1024px) 112px, 280px"
-                      className="object-cover"
-                    />
-                  </button>
-                ))
+                project.media.map((med, idx) => {
+                  const thumbSrc = med.thumbnail_url || med.webp_url || med.file_url;
+                  const fullSrc = med.webp_url || med.file_url;
+                  const isSelected = activeImage === fullSrc || (!activeImage && idx === 0);
+                  return (
+                    <button
+                      key={med.id || idx}
+                      onClick={() => setActiveImage(fullSrc)}
+                      className={`relative w-28 lg:w-full h-24 rounded-xl overflow-hidden flex-shrink-0 border-2 transition-all ${
+                        isSelected ? "border-amber-500 scale-95 shadow-md" : "border-transparent opacity-70 hover:opacity-100"
+                      }`}
+                    >
+                      <Image
+                        src={thumbSrc}
+                        alt={med.alt_text || project.name}
+                        fill
+                        unoptimized={Boolean(med.thumbnail_url || thumbSrc.split("?")[0].endsWith(".webp"))}
+                        loading={idx < 4 ? "eager" : "lazy"}
+                        sizes="(max-width: 1024px) 112px, 280px"
+                        className="object-cover"
+                      />
+                    </button>
+                  );
+                })
               ) : (
                 <div className="text-xs text-slate-400 p-4">No gallery images</div>
               )}

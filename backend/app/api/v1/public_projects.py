@@ -22,6 +22,19 @@ router = APIRouter(prefix="/projects", tags=["Public Projects"], dependencies=[D
 
 
 def to_project_card(p) -> ProjectCardResponse:
+    primary_img = None
+    if getattr(p, "media", None):
+        for m in p.media:
+            if m.is_primary and m.webp_url:
+                primary_img = m.webp_url
+                break
+            elif m.is_primary and m.file_url:
+                primary_img = m.file_url
+        if not primary_img and p.media:
+            primary_img = p.media[0].webp_url or p.media[0].file_url
+    if not primary_img:
+        primary_img = p.primary_image_url
+
     return ProjectCardResponse(
         id=p.id,
         uuid=p.uuid,
@@ -43,7 +56,7 @@ def to_project_card(p) -> ProjectCardResponse:
         area_to=p.area_to,
         area_unit=p.area_unit,
         rera_number=p.rera_number,
-        primary_image_url=storage_service.get_presigned_url(p.primary_image_url) if p.primary_image_url else None,
+        primary_image_url=storage_service.get_presigned_url(primary_img) if primary_img else None,
         logo_url=storage_service.get_presigned_url(p.logo_url) if p.logo_url else None,
         property_type_name=p.property_type.name if p.property_type else None,
         created_at=p.created_at,
