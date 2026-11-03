@@ -128,7 +128,20 @@ def get_project_by_slug(slug: str, db: Session = Depends(get_db)):
     
     # Create detail response with pre-signed URLs for S3 objects
     detail_data = ProjectDetailResponse.model_validate(project)
-    if detail_data.primary_image_url:
+    
+    # Prefer pre-optimized WebP variant for primary image if available
+    primary_webp = None
+    if project.media:
+        for m in project.media:
+            if m.is_primary and m.webp_url:
+                primary_webp = m.webp_url
+                break
+        if not primary_webp and project.media and project.media[0].webp_url:
+            primary_webp = project.media[0].webp_url
+
+    if primary_webp:
+        detail_data.primary_image_url = storage_service.get_presigned_url(primary_webp)
+    elif detail_data.primary_image_url:
         detail_data.primary_image_url = storage_service.get_presigned_url(detail_data.primary_image_url)
     if detail_data.logo_url:
         detail_data.logo_url = storage_service.get_presigned_url(detail_data.logo_url)

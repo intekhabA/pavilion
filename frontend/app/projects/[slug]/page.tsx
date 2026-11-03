@@ -58,14 +58,18 @@ export default function ProjectDetailPage() {
           setProject(res.data);
           const primaryMedia = res.data.media?.find((m: any) => m.is_primary) || res.data.media?.[0];
           setActiveImage(primaryMedia?.webp_url || res.data.primary_image_url || primaryMedia?.file_url || "");
+          setLoading(false);
 
-          // Load similar projects
-          const simRes = await apiService.publicProjects.getSimilar(slug, 3);
-          if (simRes.success) setSimilarProjects(simRes.data);
+          // Load similar projects in background without blocking main UI
+          apiService.publicProjects
+            .getSimilar(slug, 3)
+            .then((simRes) => {
+              if (simRes.success) setSimilarProjects(simRes.data);
+            })
+            .catch(() => {});
         }
       } catch (err) {
         console.error("Failed to load project:", err);
-      } finally {
         setLoading(false);
       }
     }
@@ -155,6 +159,7 @@ export default function ProjectDetailPage() {
                     alt={`${project.name} logo`}
                     width={28}
                     height={28}
+                    unoptimized={true}
                     className="object-contain"
                   />
                 </div>
@@ -207,7 +212,7 @@ export default function ProjectDetailPage() {
                 alt={project.name}
                 fill
                 priority
-                unoptimized={Boolean(activeImage && activeImage.split("?")[0].endsWith(".webp"))}
+                unoptimized={true}
                 sizes="(max-width: 1024px) 100vw, 75vw"
                 className="object-cover transition-all duration-500"
               />
@@ -233,7 +238,7 @@ export default function ProjectDetailPage() {
                         src={thumbSrc}
                         alt={med.alt_text || project.name}
                         fill
-                        unoptimized={Boolean(med.thumbnail_url || thumbSrc.split("?")[0].endsWith(".webp"))}
+                        unoptimized={true}
                         loading={idx < 4 ? "eager" : "lazy"}
                         sizes="(max-width: 1024px) 112px, 280px"
                         className="object-cover"
@@ -378,6 +383,7 @@ export default function ProjectDetailPage() {
                         }
                         alt="Floor Plan"
                         fill
+                        unoptimized={true}
                         className="object-contain p-2"
                       />
                     </div>

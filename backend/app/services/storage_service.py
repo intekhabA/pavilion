@@ -70,7 +70,11 @@ class StorageService:
         try:
             url = self.s3_client.generate_presigned_url(
                 "get_object",
-                Params={"Bucket": self.bucket_name, "Key": s3_key},
+                Params={
+                    "Bucket": self.bucket_name,
+                    "Key": s3_key,
+                    "ResponseCacheControl": "public, max-age=604800, immutable",
+                },
                 ExpiresIn=self.presigned_url_expiration,
             )
             return url
